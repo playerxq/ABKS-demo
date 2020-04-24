@@ -7,10 +7,6 @@ def main():
     dabe = Dabe(groupObj)
     GP = dabe.get_global_PP_json("./gpp/global_parameters.json")
     filename = "SERVER_KEY.json"
-    des = "./CIPHERTEXT/"
-    if os.path.exists(des):
-        shutil.rmtree(des)
-    os.mkdir(des)
     pk_ser = {}
     with open(filename, 'r') as f:
         Ser_json = json.load(f)
@@ -20,34 +16,28 @@ def main():
     with open('./policy.pp', 'r') as f:
         lists = f.readlines()
         policy = lists[0].rstrip('\n')
-    filename_msg = "./MSG/"
-    with open(filename_msg, 'r') as f:
+    with open('./message.pp', 'r') as f:
         pm = f.read()
     # symmetric key for encryption
     ssk = groupObj.random(GT)
-    # print("\nsymmetric key is\n")
-    # print(ssk)
+    print("\nsymmetric key is\n")
+    print(ssk)
     symcrypt = SymmetricCryptoAbstraction(extractor(ssk))
     SSCT = symcrypt.encrypt(pm)
-    filename = "./CIPHERTEXT/SYMMETRIC_CIPHERTEXT_" + (((filename_msg.split('/'))[2]).split('.'))[0].upper() + ".ct"
-    print("\nGenerated ciphertext is\n")
-    print(filename)
+    filename = "SYMMETRIC_CIPHERTEXT.ct"
     with open(filename, 'w') as file_object:
         file_object.write(SSCT)
     #m = groupObj.init(GT, tt)
     # Number of keywords for index generation
-    # print("\nEncrypted search index is")
+    print("\nEncrypted search index is")
     num_kw = int(sys.argv[1])
     keywords = []
     for i in range(0, num_kw):
         keywords.append(sys.argv[2 + i])
-    Offline_CT = dabe.get_Offline_CT_json("./OFFLINE_CIPHERTEXT/OFFLINE_CIPHERTEXT.json")
+    Offline_CT = dabe.get_Offline_CT_json("OFFLINE_CIPHERTEXT.json")
     CT = dabe.online_encrypt(GP, pk_ser, Offline_CT, ssk, policy, keywords)
-    #print(CT)
-    filename = "./CIPHERTEXT/ENCRYPTED_INDEX_" + (((filename_msg.split('/'))[2]).split('.'))[0].upper() + ".json"
-
-    print("\nGenerated encrypted index is\n")
-    print(filename)
+    print(CT)
+    filename = "ENCRYPTED_INDEX.json"
     FullCT_json = {}
     for i in CT.keys():
         if type(CT[i]) == dict:
