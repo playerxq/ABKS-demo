@@ -46,6 +46,10 @@ def main():
     with open(filename, 'w') as file_object:
         json.dump(OffCT_json, file_object)
     print(offline_CT)
+    des = "./CIPHERTEXT/"
+    if os.path.exists(des):
+        shutil.rmtree(des)
+    os.mkdir(des)
 
 if __name__ == '__main__':
     main()

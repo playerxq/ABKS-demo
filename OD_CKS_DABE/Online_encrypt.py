@@ -7,10 +7,7 @@ def main():
     dabe = Dabe(groupObj)
     GP = dabe.get_global_PP_json("./gpp/global_parameters.json")
     filename = "SERVER_KEY.json"
-    des = "./CIPHERTEXT/"
-    if os.path.exists(des):
-        shutil.rmtree(des)
-    os.mkdir(des)
+
     pk_ser = {}
     with open(filename, 'r') as f:
         Ser_json = json.load(f)
@@ -20,7 +17,7 @@ def main():
     with open('./policy.pp', 'r') as f:
         lists = f.readlines()
         policy = lists[0].rstrip('\n')
-    filename_msg = "./MSG/"
+    filename_msg = "./MSG/" + sys.argv[1]
     with open(filename_msg, 'r') as f:
         pm = f.read()
     # symmetric key for encryption
@@ -37,10 +34,10 @@ def main():
     #m = groupObj.init(GT, tt)
     # Number of keywords for index generation
     # print("\nEncrypted search index is")
-    num_kw = int(sys.argv[1])
+    num_kw = int(sys.argv[2])
     keywords = []
     for i in range(0, num_kw):
-        keywords.append(sys.argv[2 + i])
+        keywords.append(sys.argv[3 + i])
     Offline_CT = dabe.get_Offline_CT_json("./OFFLINE_CIPHERTEXT/OFFLINE_CIPHERTEXT.json")
     CT = dabe.online_encrypt(GP, pk_ser, Offline_CT, ssk, policy, keywords)
     #print(CT)
