@@ -1,4 +1,4 @@
-# Decentralized ABKS with expressive keyword search, online/offline encryption and outsourced decryption
+# Expressive keyword search, ignore some security properties
 # Author Xu Qian
 # Data 2020-9
 from charm.toolbox.pairinggroup import PairingGroup, ZR, G1, G2, GT, pair
